@@ -1,0 +1,18 @@
+def get_theta_double_dot_with_a(theta, theta_dot,  d_speed,d_t, dirctn):
+    mu=0.1
+    g=9.8
+    L=0.39
+    
+    return -mu*(theta_dot)-(g/L*(np.sin(theta)+(dirctn*(d_speed/d_t)*np.cos(theta))))
+
+def state(prec,T_o,T_d,d_speed,d_t,dirctn):
+    t=prec
+    theta = T_o
+    theta_dot = T_d
+    delta_t = t/100
+    for time in np.arange(0,t,delta_t):
+        theta_double_dot = get_theta_double_dot_with_a(theta, theta_dot,d_speed,d_t,dirctn)
+        theta += theta_dot * delta_t
+        theta_dot += theta_double_dot * delta_t
+    actuation=dirctn*(d_speed/d_t)*np.cos(theta)
+    return theta, theta_dot
